@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const config = {
   host: process.env.HOST || 'http://localhost',
   appPort: process.env.APP_PORT || 3000,

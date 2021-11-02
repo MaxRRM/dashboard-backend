@@ -13,9 +13,10 @@ const sequelize = new Sequelize(dbConfig.dbName, dbConfig.dbUserName, dbConfig.d
 });
 setupModels(sequelize);
 
-sequelize.sync({force: true})
-.then(() => null)
-.catch((err) => console.log(err))
+
+// sequelize.sync({force: true})
+// .then(() => null)
+// .catch((err) => console.log(err))
 
 const db = {};
 

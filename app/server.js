@@ -14,7 +14,7 @@ class Server {
 
     const server = express();
     dotenv.config()
-    const port = parseInt(config.appPort);
+    const port = parseInt(config.port);
 
 
 

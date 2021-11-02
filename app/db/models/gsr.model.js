@@ -25,11 +25,12 @@ const GsrSchema = {
 class Gsr extends Model {
   static associate(models) {
     this.belongsTo(models.User, {
+      as:'user',
       foreignKey: {
         name: 'user_id',
         allowNull: false
       },
-      onDelete: 'RESTRICT'
+      onDelete: 'CASCADE'
     })
   }
   static config(sequelize){

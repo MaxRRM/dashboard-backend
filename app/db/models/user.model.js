@@ -1,4 +1,5 @@
-const { Model, DataTypes} = require('sequelize');
+const { Model, DataTypes, Sequelize} = require('sequelize');
+//const ws = require('../../socket');
 
 const USER_TABLE = 'users';
 
@@ -35,45 +36,53 @@ const UserSchema = {
     type: DataTypes.INTEGER,
     defaultValue: 0
   },
-  // createdAt: {
-  //   allowNull: false,
-  //   type: DataTypes.DATE,
-  //   field: 'create_at',
-  //   defaultValue: Sequelize.NOW
-  // }
+  createdAt: {
+    allowNull: false,
+    type: DataTypes.DATE,
+    field: 'create_at',
+    defaultValue: Sequelize.NOW
+  }
 
 }
 
 class User extends Model {
   static associate(models) {
     this.hasMany(models.Stress, {
+      as:'stress',
       foreignKey: {
         name: 'user_id',
         allowNull: false
       },
-      onDelete: 'RESTRICT'
+      onDelete: 'CASCADE'
     })
 
     this.hasMany(models.Gsr, {
+      as:'gsr',
       foreignKey: {
         name: 'user_id',
         allowNull: false
       },
-      onDelete: 'RESTRICT'
+      onDelete: 'CASCADE'
     })
 
-    this.hasMany(models.Pulsimeter, {
+    this.hasMany(models.Pulsimeter,{
+      as:'pulsimeter',
       foreignKey: {
         name: 'user_id',
         allowNull: false
       },
-      onDelete: 'RESTRICT'
+      onDelete: 'CASCADE'
     })
 
   }
 
   static config(sequelize){
     return {
+      // hooks: {
+      //   afterCreate: (user) => {
+      //     ws.turnOn(user)
+      //   }
+      // },
       sequelize,
       tableName: USER_TABLE,
       modelName: 'User',

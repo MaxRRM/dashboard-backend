@@ -1,7 +1,7 @@
 const { User, UserSchema } = require('./user.model');
 const { Gsr, GsrSchema } = require('./gsr.model');
 const { Pulsimeter, PulsimeterSchema } = require('./pulsimeter.model')
-const { Stress, StressSchema } = require('./stress.model')
+const { Stress, StressSchema } = require('./stress.model');
 
 function setupModels(sequelize) {
   User.init(UserSchema, User.config(sequelize));
@@ -13,6 +13,8 @@ function setupModels(sequelize) {
   Gsr.associate(sequelize.models);
   Pulsimeter.associate(sequelize.models);
   Stress.associate(sequelize.models);
+
+  console.log(User.hasHook('afterCreate'))
 }
 
 module.exports = setupModels

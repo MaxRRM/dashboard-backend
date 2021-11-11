@@ -1,4 +1,5 @@
 const { Model, DataTypes, Sequelize} = require('sequelize');
+const ws = require('../../socket');
 
 const PULSIMETER_TABLE = 'pulsimeter';
 
@@ -29,15 +30,21 @@ const PulsimeterSchema = {
 class Pulsimeter extends Model {
   static associate(models) {
     this.belongsTo(models.User, {
+      as:'user',
       foreignKey: {
         name: 'user_id',
         allowNull: false
       },
-      onDelete: 'RESTRICT'
+      onDelete: 'CASCADE'
     })
   }
   static config(sequelize){
     return {
+      hooks: {
+        afterCreate: (pulsimeter) => {
+          ws.turnOn(pulsimeter)
+        }
+      },
       sequelize,
       tableName: PULSIMETER_TABLE,
       modelName: 'Pulsimeter',

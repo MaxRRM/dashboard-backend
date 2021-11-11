@@ -4,18 +4,17 @@ class Server {
   main () {
 
     const express = require('express');
+    const app = express();
+    const server = require('http').createServer(app);
+    const ws = require('./socket')
+
     const cors = require('cors');
-    const dotenv = require('dotenv')
-
-    const config = require('./config/config')
-
-
-    const { logErrors, errorHandler, boomErrorHandler } = require('./middlewares/errorHandler');
-
-    const server = express();
-    dotenv.config()
+    const dotenv = require('dotenv');
+    dotenv.config();
+    const config = require('./config/config');
     const port = parseInt(config.appPort);
-
+    const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler } = require('./middlewares/errorHandler');
+      //const { checkApiKey } = require('./middlewares/authHandler');
 
 
     // const whitelist = []
@@ -30,20 +29,32 @@ class Server {
     // }
 
 
+    const passport = require('passport');
+    app.use(passport.initialize());
+    require('./utils/auth/index'); //inicializa las estrategias de passport
+
     const db = require('./db/sequelize')
     const router = require('./network/routes')
 
-    server.use(cors());
-    server.use(express.json());
+    app.use(express.static(__dirname + '/public')); //servicio del HTML
+    app.use(cors());
+    app.use(express.json());
 
+    //conexion socket
+    ws.connect(server);
+
+    //conexion de router y db
     db.connect()
-    router(server)
+    router(app)
 
-    server.use(logErrors);
-    server.use(boomErrorHandler);
-    server.use(errorHandler);
+    //Middlewares
+      //app.use(checkApiKey);
+    app.use(logErrors);
+    app.use(ormErrorHandler);
+    app.use(boomErrorHandler);
+    app.use(errorHandler);
 
-    server.listen(port,()=>{
+    server.listen(port,() => {
       console.log(`Running in PORT: ${port}`)
     })
   }

@@ -25,11 +25,12 @@ const StressSchema = {
 class Stress extends Model {
   static associate(models) {
     this.belongsTo(models.User, {
+      as:'user',
       foreignKey: {
         name: 'user_id',
         allowNull: false
       },
-      onDelete: 'RESTRICT'
+      onDelete: 'CASCADE'
     })
 
   }

@@ -1,4 +1,5 @@
 const { Model, DataTypes, Sequelize} = require('sequelize');
+const ws = require('../../socket');
 
 const PULSIMETER_TABLE = 'pulsimeter';
 
@@ -39,6 +40,11 @@ class Pulsimeter extends Model {
   }
   static config(sequelize){
     return {
+      hooks: {
+        afterCreate: (pulsimeter) => {
+          ws.turnOn(pulsimeter)
+        }
+      },
       sequelize,
       tableName: PULSIMETER_TABLE,
       modelName: 'Pulsimeter',

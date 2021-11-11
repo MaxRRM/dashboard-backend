@@ -1,24 +1,42 @@
 const boom = require('@hapi/boom');
 const db = require("../../db/sequelize");
 const { models } = db.sequelize;
-//const userDB = require('./user.db')
+const auth = require('../../utils/auth/auth');
+
 
 class UserController {
 
-  constructor(){
-    this.users = [];
-  }
+  constructor(){}
 
   async create(user) {
-    const newUser = await models.User.create(user);
+    const hash = auth.hashPassword(user.password);
+    const newUser = await models.User.create({
+      ...user,
+      password: hash
+    });
     if(!newUser) {
       throw boom.serverUnavailable('unavailable');
     }
+    delete newUser.dataValues.password;
     return newUser
   }
 
   async findAll() {
-      return await models.User.findAll();
+      const users = await models.User.findAll();
+      return users.map((user) => {
+        delete user.dataValues.password
+        delete user.dataValues.createdAt
+        return user
+      })
+  }
+
+  async findByEmail(email) {
+    const rta = await models.User.findOne({
+      where: {
+        email
+      }
+    })
+    return rta
   }
 
   async findOne(id) {
@@ -33,13 +51,13 @@ class UserController {
   }
 
   async update(id, changes) {
-    const user = await this.findOne(id);
+    const user = await models.User.findOne(id);
     const rta = await user.update(changes);
     return rta
   }
 
   async delete(id) {
-    const user = await this.findOne(id);
+    const user = await models.User.findOne(id);
     await user.destroy();
     return {id}
   }

@@ -1,19 +1,22 @@
 const express = require('express');
 const router = express.Router();
+const { checkApiKey } = require('../../middlewares/authHandler')
 
 const UserController = require('./user.controller')
 const controller = new UserController();
 const  validatorHandler = require('../../middlewares/validatorHandler');
 const { createUserSchema, updateUserSchema, getUserSchema } = require('../../schemas/user.schema')
 
-router.get('/all',async (req, res, next) => {
-  try{
-    const users = await controller.findAll();
-    res.status(200).json(users)
-  }
-  catch(err){
-    next(err)
-  }
+router.get('/all',
+  checkApiKey,
+  async (req, res, next) => {
+    try{
+      const users = await controller.findAll();
+      res.status(200).json(users)
+    }
+    catch(err){
+      next(err)
+    }
 });
 
 router.get('/:id',

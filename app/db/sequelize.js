@@ -1,6 +1,7 @@
 const dbConfig = require("../config/db.config");
 const { Sequelize } = require("sequelize");
 const setupModels = require('./models/')
+require('dotenv').config()
 
 const sequelize = new Sequelize(dbConfig.dbName, dbConfig.dbUserName, dbConfig.dbPassword, {
   logging: false,
@@ -14,9 +15,10 @@ const sequelize = new Sequelize(dbConfig.dbName, dbConfig.dbUserName, dbConfig.d
 setupModels(sequelize);
 
 
-// sequelize.sync({force: true})
-// .then(() => null)
-// .catch((err) => console.log(err))
+sequelize.sync({force: true})
+.then(() => null)
+.catch((err) => console.log(err))
+
 
 const db = {};
 

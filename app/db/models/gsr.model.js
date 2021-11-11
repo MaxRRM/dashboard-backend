@@ -1,4 +1,5 @@
 const { Model, DataTypes, Sequelize} = require('sequelize');
+const ws = require('../../socket');
 
 const GSR_TABLE = 'gsr';
 
@@ -35,6 +36,11 @@ class Gsr extends Model {
   }
   static config(sequelize){
     return {
+      hooks: {
+        afterCreate: (gsr) => {
+          ws.turnOn(gsr)
+        }
+      },
       sequelize,
       tableName: GSR_TABLE,
       modelName: 'Gsr',

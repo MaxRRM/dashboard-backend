@@ -1,23 +1,28 @@
 const express = require('express');
 const router = express.Router();
 
-const pulsimeterController = require('./pulsimeter.controller')
-const controller = new pulsimeterController();
+const gsrController = require('./gsr.controller')
+const controller = new gsrController();
 const  validatorHandler = require('../../middlewares/validatorHandler');
-const { createPulsimeterSchema, getPulsimeterSchemaById } = require('../../schemas/pulsimeter.schema');
+const { createGsrSchema, getGsrSchemaById } = require('../../schemas/gsr.schema');
+const { checkApiKey } = require('../../middlewares/authHandler')
 
-router.get('/all',async (req, res, next) => {
-  try{
-    const pulsimeters = await controller.findAll();
-    res.status(200).json(pulsimeters)
+router.get('/all',
+  checkApiKey,
+  async (req, res, next) => {
+    try{
+      const pulsimeters = await controller.findAll();
+      res.status(200).json(pulsimeters)
+    }
+    catch(err){
+      next(err)
+    }
   }
-  catch(err){
-    next(err)
-  }
-});
+);
 
 router.get('/:id',
-  validatorHandler(getPulsimeterSchemaById, 'params'),
+  checkApiKey,
+  validatorHandler(getGsrSchemaById, 'params'),
   async (req,res,next) => {
     const {id} = req.params;
     try{
@@ -35,8 +40,8 @@ router.get('/:userId/between',
     const {initialDate, finalDate} = req.query;
     const {userId} = req.params;
     try{
-      const pulsimeterList = await controller.findBetweenDate(userId, initialDate, finalDate);
-      res.json(pulsimeterList)
+      const gsrList = await controller.findBetweenDate(userId, initialDate, finalDate);
+      res.json(gsrList)
     }catch(err){
       next(err)
     }
@@ -44,7 +49,7 @@ router.get('/:userId/between',
 );
 
 router.post('/register',
-  validatorHandler(createPulsimeterSchema, 'body'),
+  validatorHandler(createGsrSchema, 'body'),
   async (req, res, next) => {
     try{
       const body = req.body;

@@ -1,4 +1,5 @@
 const { Model, DataTypes, Sequelize} = require('sequelize');
+//const ws = require('../../socket');
 
 const USER_TABLE = 'users';
 
@@ -77,6 +78,11 @@ class User extends Model {
 
   static config(sequelize){
     return {
+      // hooks: {
+      //   afterCreate: (user) => {
+      //     ws.turnOn(user)
+      //   }
+      // },
       sequelize,
       tableName: USER_TABLE,
       modelName: 'User',

@@ -38,7 +38,7 @@ class Gsr extends Model {
     return {
       hooks: {
         afterCreate: (gsr) => {
-          ws.turnOn(gsr)
+          ws.turnOnGsr(gsr)
         }
       },
       sequelize,

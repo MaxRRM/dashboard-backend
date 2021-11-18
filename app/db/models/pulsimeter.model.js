@@ -42,7 +42,7 @@ class Pulsimeter extends Model {
     return {
       hooks: {
         afterCreate: (pulsimeter) => {
-          ws.turnOn(pulsimeter)
+          ws.turnOnPulse(pulsimeter)
         }
       },
       sequelize,

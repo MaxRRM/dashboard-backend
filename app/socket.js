@@ -16,13 +16,18 @@ function connect(server) {
 
 }
 
-function turnOn(data) {
-  socket.io.emit('server:data', data)
+function turnOnPulse(pulse) {
+  socket.io.emit('server:data:pulse', pulse)
+}
+
+function turnOnGsr(gsr) {
+  socket.io.emit('server:data:gsr', gsr)
 }
 
 
 module.exports = {
   connect,
-  turnOn,
+  turnOnPulse,
+  turnOnGsr,
   socket
 }

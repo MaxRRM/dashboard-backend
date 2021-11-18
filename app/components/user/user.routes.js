@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { checkApiKey } = require('../../middlewares/authHandler')
+//const { checkApiKey } = require('../../middlewares/authHandler')
 
 const UserController = require('./user.controller')
 const controller = new UserController();
@@ -8,7 +8,7 @@ const  validatorHandler = require('../../middlewares/validatorHandler');
 const { createUserSchema, updateUserSchema, getUserSchema } = require('../../schemas/user.schema')
 
 router.get('/all',
-  checkApiKey,
+  //checkApiKey,
   async (req, res, next) => {
     try{
       const users = await controller.findAll();

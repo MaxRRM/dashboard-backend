@@ -1,6 +1,5 @@
 const socketIO = require('socket.io');
 const socket = {};
-const algo = {}
 
 function connect(server) {
   socket.io = socketIO(server);
@@ -25,6 +24,5 @@ function turnOn(data) {
 module.exports = {
   connect,
   turnOn,
-  algo,
   socket
 }

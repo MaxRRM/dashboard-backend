@@ -5,8 +5,6 @@ const USER = encodeURIComponent(configDB.dbUserName);
 const PASSWORD = encodeURIComponent(configDB.dbPassword);
 const URI = `postgres://${USER}:${PASSWORD}@${configDB.dbHost}:${configDB.dbPort}/${configDB.dbName}`;
 
-console.log(configDB);
-
 module.exports = {
   development: {
     url: URI,

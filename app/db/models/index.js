@@ -13,8 +13,6 @@ function setupModels(sequelize) {
   Gsr.associate(sequelize.models);
   Pulsimeter.associate(sequelize.models);
   Stress.associate(sequelize.models);
-
-  console.log(User.hasHook('afterCreate'))
 }
 
 module.exports = setupModels

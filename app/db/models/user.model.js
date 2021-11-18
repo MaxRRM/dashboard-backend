@@ -39,7 +39,7 @@ const UserSchema = {
   createdAt: {
     allowNull: false,
     type: DataTypes.DATE,
-    field: 'create_at',
+    field: 'created_at',
     defaultValue: Sequelize.NOW
   }
 
@@ -78,11 +78,6 @@ class User extends Model {
 
   static config(sequelize){
     return {
-      // hooks: {
-      //   afterCreate: (user) => {
-      //     ws.turnOn(user)
-      //   }
-      // },
       sequelize,
       tableName: USER_TABLE,
       modelName: 'User',

@@ -2,11 +2,14 @@ const socketIO = require('socket.io');
 const socket = {};
 
 function connect(server) {
-  socket.io = socketIO(server);
+  socket.io = socketIO(server,{
+    cors: {
+      origin: "http://localhost:4200",
+      methods: ["GET", "POST"]
+    }
+  });
   socket.io.on('connection', (socket) => {
     console.log('new connection', socket.id);
-
-    // socket.emit('server:data', data);
 
     socket.on('disconnect', () => {
       console.log('user disconnected');
